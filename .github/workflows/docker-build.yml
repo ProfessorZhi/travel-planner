@@ -1,18 +1,9 @@
-name: Docker Build and Push
+name: Build and push Docker image
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ main ]
-  # 添加手动触发选项
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: '触发构建的原因'
-        required: false
-        default: '手动触发构建'
 
 jobs:
   build:
@@ -29,37 +20,12 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # 验证必要的 secrets 是否存在
-      - name: Check required secrets
-        run: |
-          if [ -z "${{ secrets.ALIYUN_USERNAME }}" ]; then
-            echo "错误: ALIYUN_USERNAME secret 未设置"
-            echo "请参考 docs/SECRETS_SETUP.md 文档设置必要的 secrets"
-            exit 1
-          fi
-          if [ -z "${{ secrets.ALIYUN_PASSWORD }}" ]; then
-            echo "错误: ALIYUN_PASSWORD secret 未设置"
-            echo "请参考 docs/SECRETS_SETUP.md 文档设置必要的 secrets"
-            exit 1
-          fi
-          echo "当前使用的镜像仓库用户名: ${{ secrets.ALIYUN_USERNAME }}"
-          # 检查区域设置
-          echo "正在尝试连接阿里云镜像仓库..."
-          curl -I https://registry.cn-hangzhou.aliyuncs.com/v2/
-
       - name: Login to Aliyun Container Registry
-        run: |
-          echo "开始登录阿里云容器镜像服务..."
-          echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login registry.cn-hangzhou.aliyuncs.com -u ${{ secrets.ALIYUN_USERNAME }} --password-stdin
-          if [ $? -eq 0 ]; then
-            echo "登录成功！"
-          else
-            echo "登录失败。请检查凭证是否正确。"
-            echo "提示：请确保在阿里云容器镜像服务中已创建：" 
-            echo "1. 命名空间" 
-            echo "2. 仓库名: travel-planner"
-            echo "3. 已设置正确的访问凭证"
-            exit 1
-          fi
+        uses: docker/login-action@v3
+        with:
+          registry: crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com
+          username: ${{ secrets.ALIYUN_USERNAME }}
+          password: ${{ secrets.ALIYUN_PASSWORD }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -67,8 +33,5 @@ jobs:
           context: .
           push: true
           tags: |
-            registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:latest
-            registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:${{ github.sha }}
-          build-args: |
-            AMAP_KEY=0f0618af64041f39a807569d78b37c7d
-            BAILIAN_API_KEY=sk-0479004179164997b5fdae1888704256
+            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:latest
+            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:${{ github.sha }}
