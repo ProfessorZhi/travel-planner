@@ -1,0 +1,114 @@
+import React, { useEffect, useRef } from 'react';
+import AMapLoader from '@amap/amap-jsapi-loader';
+import './MapView.css';
+
+const AMAP_KEY = import.meta.env.VITE_AMAP_KEY || '0f0618af64041f39a807569d78b37c7d';
+
+export default function MapView({ location, points = [], showRoute = true, zoom = 11 }) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const mapContainer = mapRef.current;
+
+    const loadMap = async () => {
+      try {
+        const AMap = await AMapLoader.load({
+          key: AMAP_KEY,
+          version: '2.0',
+          plugins: [
+            'AMap.ToolBar',
+            'AMap.Scale',
+            'AMap.HawkEye',
+            'AMap.MapType',
+            'AMap.Marker',
+            'AMap.Polyline',
+            'AMap.InfoWindow'
+          ]
+        });
+
+        if (!isMounted || !mapContainer) return;
+
+        // 创建地图实例
+        const mapInstance = new AMap.Map(mapContainer, {
+          zoom,
+          center: location ? [location.lng, location.lat] : [116.397428, 39.90923],
+          resizeEnable: true
+        });
+
+        mapInstanceRef.current = mapInstance;
+
+        // 添加控件
+        mapInstance.addControl(new AMap.ToolBar());
+        mapInstance.addControl(new AMap.Scale());
+        mapInstance.addControl(new AMap.MapType({ defaultType: 0 }));
+
+        // 处理标记点
+        if (points?.length > 0) {
+          // 创建标记点
+          const markers = points.map((point, index) => {
+            const marker = new AMap.Marker({
+              position: [point.lng, point.lat],
+              title: point.title,
+              label: {
+                content: `${index + 1}`,
+                direction: 'top'
+              }
+            });
+
+            // 创建信息窗体
+            const info = new AMap.InfoWindow({
+              content: `<div class="map-info">
+                <h4>${point.title || ''}</h4>
+                <p>${point.info || ''}</p>
+              </div>`,
+              offset: new AMap.Pixel(0, -30)
+            });
+
+            // 点击标记时显示信息窗体
+            marker.on('click', () => {
+              info.open(mapInstance, marker.getPosition());
+            });
+
+            return marker;
+          });
+
+          // 添加标记点到地图
+          mapInstance.add(markers);
+
+          // 如果需要显示路线且有多个点
+          if (showRoute && points.length > 1) {
+            const polyline = new AMap.Polyline({
+              path: points.map(p => [p.lng, p.lat]),
+              strokeColor: "#3366FF",
+              strokeWeight: 4,
+              strokeStyle: "dashed",
+              strokeDasharray: [10, 5],
+              lineJoin: 'round'
+            });
+            mapInstance.add(polyline);
+          }
+
+          // 自动调整视野以包含所有点
+          mapInstance.setFitView();
+        }
+      } catch (error) {
+        console.error('地图加载失败:', error);
+      }
+    };
+
+    loadMap();
+
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.destroy();
+      }
+    };
+  }, [location, points, showRoute, zoom]);
+
+  return (
+    <div ref={mapRef} className="map-container" />
+  );
+}

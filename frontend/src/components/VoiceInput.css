@@ -1,0 +1,80 @@
+.voice-input {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.voice-input textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.voice-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-button::before {
+  content: '🎤';
+}
+
+.voice-button.listening {
+  background-color: #f44336;
+  animation: pulse 1.5s infinite;
+}
+
+.voice-button.listening::before {
+  content: '⚫';
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
