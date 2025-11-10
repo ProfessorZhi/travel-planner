@@ -6,6 +6,13 @@ on:
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ main ]
+  # 添加手动触发选项
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: '触发构建的原因'
+        required: false
+        default: '手动触发构建'
 
 jobs:
   build:
@@ -48,8 +55,8 @@ jobs:
           context: .
           push: true
           tags: |
-            registry.cn-hangzhou.aliyuncs.com/ai-travel-planner/app:latest
-            registry.cn-hangzhou.aliyuncs.com/ai-travel-planner/app:${{ github.sha }}
+            registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:latest
+            registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:${{ github.sha }}
           build-args: |
             AMAP_KEY=0f0618af64041f39a807569d78b37c7d
             BAILIAN_API_KEY=sk-0479004179164997b5fdae1888704256

@@ -12,7 +12,14 @@
 
    ## ALIYUN_USERNAME
    - Name: `ALIYUN_USERNAME`
-   - Secret: 从阿里云容器镜像服务获取的访问凭证用户名（通常是您的阿里云账号全名）
+   - Secret: 从阿里云容器镜像服务获取的"镜像仓库登录名"
+   
+   获取方法：
+   1. 登录阿里云控制台：https://cr.console.aliyun.com/
+   2. 点击左侧菜单"访问凭证"
+   3. 在"固定访问凭证"页面找到"镜像仓库登录名"
+   
+   注意：这个值应该类似于 nick2650733193，不是账号 ID
 
    ## ALIYUN_PASSWORD
    - Name: `ALIYUN_PASSWORD`
