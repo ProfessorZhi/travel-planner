@@ -33,5 +33,5 @@ jobs:
           context: .
           push: true
           tags: |
-            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:latest
-            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/travel-planner:${{ github.sha }}
+            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
+            crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:${{ github.sha }}
