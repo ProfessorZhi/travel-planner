@@ -148,6 +148,19 @@ app.post('/api/plan', async (req, res) => {
   }
 });
 
+// 托管前端静态文件（生产环境）
+const path = require('path');
+const frontendPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendPath));
+
+// 所有非 API 路由返回 index.html（支持前端路由）
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Backend listening on port ${PORT}`);
+  console.log(`Frontend available at http://localhost:${PORT}`);
 });
