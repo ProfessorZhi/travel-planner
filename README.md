@@ -40,19 +40,36 @@ cd frontend
 npm install
 ```
 
-### Docker 快速启动
+### Docker 快速启动（推荐）
 
 ```bash
 # 拉取最新镜像
-docker pull registry.cn-hangzhou.aliyuncs.com/ai-travel-planner/app:latest
+docker pull crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
 
 # 运行容器
 docker run -d \
   -p 3000:3000 \
-  -e AMAP_KEY=0f0618af64041f39a807569d78b37c7d \
-  -e BAILIAN_API_KEY=sk-0479004179164997b5fdae1888704256 \
-  registry.cn-hangzhou.aliyuncs.com/ai-travel-planner/app:latest
+  --name travel-planner \
+  crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
+
+# 查看容器状态
+docker ps
+
+# 查看日志
+docker logs travel-planner
+
+# 停止容器
+docker stop travel-planner
+
+# 访问应用
+# 浏览器打开 http://localhost:3000
 ```
+
+**镜像信息：**
+- 公网地址：`crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner`
+- 专有网络：`crpi-dx5a494scg4cqf6f-vpc.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner`
+- 镜像大小：约 200MB
+- 自动构建：每次推送到 main 分支自动构建并推送最新镜像
 
 ### 环境变量配置
 
@@ -187,48 +204,4 @@ create policy "Users can insert their own plans"
 ## 许可证
 
 MIT
-
-## 操作指南（制品描述）
-
-1. 登录阿里云 Container Registry
-```bash
-$ docker login --username=nick2650733193 crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com
-```
-用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。
-
-您可以在访问凭证页面修改凭证密码。
-
-注意：使用 RAM 用户（子账号）登录镜像仓库时，不支持企业别名带有英文半角句号（.）。
-
-2. 从 Registry 中拉取镜像
-```bash
-$ docker pull crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:[镜像版本号]
-```
-
-3. 将镜像推送到 Registry
-```bash
-$ docker login --username=nick2650733193 crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com
-$ docker tag [ImageId] crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:[镜像版本号]
-$ docker push crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:[镜像版本号]
-```
-请根据实际镜像信息替换示例中的 `[ImageId]` 和 `[镜像版本号]` 参数。
-
-4. 选择合适的镜像仓库地址
-
-从 ECS 推送镜像时，可以选择使用镜像仓库内网地址。推送速度将得到提升并且将不会损耗您的公网流量。
-
-如果您使用的机器位于 VPC 网络，请使用 `crpi-dx5a494scg4cqf6f-vpc.cn-hangzhou.personal.cr.aliyuncs.com` 作为 Registry 的域名登录。
-
-5. 示例
-
-使用 `docker tag` 命令重命名镜像，并将它通过专有网络地址推送至 Registry。
-
-```bash
-$ docker images
-REPOSITORY                                                         TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-registry.aliyuncs.com/acs/agent                                    0.7-dfb6816         37bb9c63c8b2        7 days ago          37.89 MB
-$ docker tag 37bb9c63c8b2 crpi-dx5a494scg4cqf6f-vpc.cn-hangzhou.personal.cr.aliyuncs.com/acs/agent:0.7-dfb6816
-$ docker push crpi-dx5a494scg4cqf6f-vpc.cn-hangzhou.personal.cr.aliyuncs.com/acs/agent:0.7-dfb6816
-```
-
 
