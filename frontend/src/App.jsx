@@ -10,7 +10,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [plans, setPlans] = useState([]);
   const [currentPlan, setCurrentPlan] = useState(null);
-  const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
+  const apiBase = import.meta.env.VITE_API_BASE || '';
 
   useEffect(() => {
     // 检查当前会话状态
