@@ -35,3 +35,6 @@ jobs:
           tags: |
             crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
             crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:${{ github.sha }}
+          build-args: |
+            AMAP_KEY=0f0618af64041f39a807569d78b37c7d
+            BAILIAN_API_KEY=sk-0479004179164997b5fdae1888704256
