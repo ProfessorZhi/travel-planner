@@ -2,6 +2,26 @@
 
 基于 React + Node.js + 阿里云百炼的智能旅行规划系统，提供 AI 生成行程、地图可视化等功能。
 
+## 🎯 助教快速运行指南
+
+**最简单的运行方式（推荐）：**
+
+```bash
+# 仅需两条命令（需要安装 Docker）
+docker pull crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
+docker run -d -p 3000:3000 crpi-dx5a494scg4cqf6f.cn-hangzhou.personal.cr.aliyuncs.com/travel-planne/travel-planner:latest
+
+# 浏览器访问 http://localhost:3000
+```
+
+**说明：**
+- ✅ 无需克隆代码
+- ✅ 无需安装 Node.js
+- ✅ API Keys 已内置（高德地图 + 阿里云百炼，有效期至 2026-02-11）
+- ✅ 30秒内启动完成
+
+---
+
 ## 功能特点
 
 - 🤖 AI 规划：集成阿里云百炼大模型，生成个性化旅行建议
@@ -83,16 +103,22 @@ AMAP_KEY=0f0618af64041f39a807569d78b37c7d
 BAILIAN_API_KEY=sk-0479004179164997b5fdae1888704256
 ```
 
-### 4. 本地开发
+### 方式二：从源码运行（需要 Node.js 18+）
 
 ```bash
-# 启动后端 (http://localhost:4000)
-cd backend
-npm run dev
+# 1. 克隆仓库
+git clone https://github.com/ProfessorZhi/travel-planner.git
+cd travel-planner
 
-# 启动前端 (http://localhost:3000)
-cd frontend
-npm run dev
+# 2. 安装依赖
+cd backend && npm install
+cd ../frontend && npm install
+
+# 3. 启动后端 (http://localhost:4000)
+cd backend && npm start &
+
+# 4. 启动前端 (http://localhost:3000)
+cd ../frontend && npm run dev
 ```
 
 ### 5. Docker 部署
