@@ -12,7 +12,7 @@ app.use(express.json());
 // 添加讯飞语音识别路由
 app.use('/api/xunfei', xunfeiRouter);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 // 初始化 Supabase 客户端
 const supabase = createClient(
